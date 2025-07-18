@@ -9,6 +9,7 @@ export interface WeatherApiResponse {
       text: string;
       icon: string;
     };
+    last_updated: string;
   };
   forecast: {
     forecastday: {
