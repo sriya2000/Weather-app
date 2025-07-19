@@ -109,6 +109,30 @@
     width: 90%;
   }
 }
+
+.unit-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.unit-btn {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #e0e0e0;
+  color: #222;
+  font-weight: 500;
+  cursor: pointer;
+  /* transition: background 0.2s, color 0.2s; */
+}
+
+.unit-btn.active {
+  background: #61dafb;
+  color: #222;
+  font-weight: bold;
+}
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;
