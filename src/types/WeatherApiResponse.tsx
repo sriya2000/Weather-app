@@ -10,6 +10,8 @@ export interface WeatherApiResponse {
       icon: string;
     };
     last_updated: string;
+    humidity: number;        
+    wind_kph: number;
   };
   forecast: {
     forecastday: {

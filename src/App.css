@@ -31,7 +31,15 @@
   text-align: start;
 }
 
-.hourly-forecast,
+.hourly-forecast{
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+
 .five-day-forecast {
   margin-top: 20px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -40,17 +48,33 @@
   width: 100%;
 }
 
-.hourly-list,
-.forecast-list {
+.hourly-list{
   display: flex;
   overflow-x: auto;
   gap: 10px;
 }
 
+.forecast-list {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Responsive ke liye */
+}
+
 .hour,
 .day {
+   background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 8px;
+  width: 120px;           /* <-- Fixed width */
+  min-width: 100px;
   text-align: center;
-  min-width: 80px;
+  flex-shrink: 0;         /* Box chota nahi hoga */
+  box-sizing: border-box;
+  color: #fff;
+  margin-bottom: 10px;
+  /* Optional: shadow for better look */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 768px) {
@@ -132,6 +156,23 @@
   background: #61dafb;
   color: #222;
   font-weight: bold;
+}
+
+.current-weather-details-box {
+  background: rgba(0,0,0,0.5);
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+  min-width: 220px;
+}
+.current-weather-details-box img {
+  width: 60px;
+  height: 60px;
+}
+.current-weather-details-box p {
+  margin: 6px 0;
 }
 /* .App-logo {
   height: 40vmin;
