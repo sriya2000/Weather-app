@@ -22,12 +22,9 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData, unit }) => 
       <div className="hourly-list border-top p-2">
         {hourlyData.map((hour, index) => (
           <div key={index} className="hour">
-            <p>{new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+            <p className='fw-semibold'>{new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
             <img src={hour.icon} alt={hour.condition} />
-            {/* <p>{hour.temp}°C</p> */}
-            <p>
-            {hour.temp.toFixed(1)}°{unit}
-          </p>
+            <p>{hour.temp.toFixed(1)}°{unit}</p>
           </div>
         ))}
       </div>

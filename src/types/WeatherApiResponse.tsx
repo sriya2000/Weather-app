@@ -12,6 +12,7 @@ export interface WeatherApiResponse {
     last_updated: string;
     humidity: number;        
     wind_kph: number;
+    cloud: number;
   };
   forecast: {
     forecastday: {

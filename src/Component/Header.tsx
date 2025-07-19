@@ -1,40 +1,36 @@
-import { Link,useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
 
-  const [search, setSearch] = useState('');
+  const [inputCity, setInputCity] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (search.trim()) {
-      navigate(`/city/${encodeURIComponent(search.trim())}`);
-      setSearch('');
+    if (inputCity.trim()) {
+      navigate(`/${inputCity.trim()}`);
     }
   };
 
   return (
-    <div className="d-flex flex-column mb-4">
-
-       {/* Logo will be link to home page */}
-      <Link to="/" style={{ textDecoration: 'none' }}></Link>
-      <p className="display-4 fw-bold logo" style={{ cursor: 'pointer' }}>WW⚡</p>
-      <div className="mb-4">
-        <form className="d-flex position-relative" onSubmit={handleSubmit}>
-          <input
-            className="form-control ps-5 py-2 rounded-pill search-bar"
-            type="search"
-            placeholder="Search by City"
-            aria-label="Search"
-             value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          <span className="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
-            <i className="bi bi-search"></i>
-          </span>
-        </form>
-      </div>
+    <div className="d-flex flex-column">
+      <Link to="/" className="display-4 fw-bold logo text-decoration-none text-warning">WW⚡</Link>
+      {/* <p className="display-4 fw-bold logo">WW⚡</p> */}
+      <form className="d-flex position-relative my-2" onSubmit={handleSearch}>
+        <input
+          className="form-control ps-5 py-2 rounded-pill search-bar"
+          type="search"
+          value={inputCity}
+          onChange={(e) => setInputCity(e.target.value)}
+          placeholder="Search by City"
+          aria-label="Search"
+        />
+        <span className="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+          <i className="bi bi-search"></i>
+        </span>
+        <button type="submit" className="btn btn-primary ms-2 px-4 rounded-pill">Search</button>
+      </form>
     </div>
   );
 };

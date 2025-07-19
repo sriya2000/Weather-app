@@ -6,9 +6,8 @@ import FiveDayForecast from '../Component/FiveDayForecast';
 import DefaultCityForecast from '../Component/DefaultCityForecast';
 import Header from '../Component/Header';
 import UnitToggle from '../Component/UnitToggle';
+import CurrentWeatherDetails from '../Component/CurrentWeatherDetails';
 import dayjs from 'dayjs';
-
-
 
 interface WeatherData {
   temp: number;
@@ -21,6 +20,7 @@ interface WeatherData {
   minTemp: number;
   humidity: number;
   wind: number;
+  cloud: number;
   hourly: {
     time: string;
     temp: number;
@@ -36,9 +36,9 @@ interface WeatherData {
   }[];
 }
 
-const Home :React.FC = () => {
+const Home: React.FC = () => {
+  const [weather, setWeather] = useState<WeatherData | null>(null);
 
-     const [weather, setWeather] = useState<WeatherData | null>(null);
 
   const [unit, setUnit] = useState<'C' | 'F'>('C');
 
@@ -50,7 +50,7 @@ const Home :React.FC = () => {
     const fetchWeather = async () => {
       try {
         const response = await axios.get<WeatherApiResponse>(
-          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=London&days=5`
+          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=Bangalore&days=5`
         );
 
         const data = response.data;
@@ -69,6 +69,7 @@ const Home :React.FC = () => {
           minTemp: data.forecast.forecastday[0].day.mintemp_c,
           humidity: data.current.humidity,
           wind: data.current.wind_kph,
+          cloud: data.current.cloud,
           // Hourly for today (day 1)
           hourly: data.forecast.forecastday[0].hour.map((hour: any) => ({
             time: hour.time,
@@ -99,11 +100,11 @@ const Home :React.FC = () => {
   }
 
   return (
-     <div className="App">
-      <div className="d-flex flex-grow-1" style={{ height: '100vh' }}>
+    <div className="App">
+      <div className="App-body d-flex flex-grow-1">
         {/* -----------------------------------------------LEFT-SECTION------------------------------------------------ */}
         <div className="left-section col-lg-6 d-flex flex-column justify-content-between align-items-start">
-          <div className='d-flex w-100 justify-content-between'>
+          <div>
             {/* Head Section */}
             <Header />
             {/* Toggle Button */}
@@ -122,28 +123,20 @@ const Home :React.FC = () => {
 
         {/* -----------------------------------------------RIGHT-SECTION------------------------------------------------ */}
         <div className='right-section col-lg-6'>
-          <div className="current-forecast">
-            <h3>Current Weather Details</h3>
-            <p className="mb-2 fw-semibold border-top p-2">Thunderstorm with light drizzle</p>
-            <div className="hourly-list ">
-              <div className="hour">
-                <p>🌡 Temp max: 19&deg;C</p>
-              </div>
-              <div className="hour">
-                <p>🌡 Temp min: 15&deg;C</p>
-              </div>
-              <div className="hour">
-                <p>💧 Humidity: 58%</p>
-              </div>
-              <div className="hour">
-                <p>☁️ Cloudy: 86%</p>
-              </div>
-              <div className="hour">
-                <p>💨 Wind: 5km/h</p>
-              </div>
-            </div>
-          </div>
-
+          {/* Default City Forecast Details */}
+          <CurrentWeatherDetails
+            description={weather.description}
+            maxTemp={convertTemp(weather.maxTemp)}
+            minTemp={convertTemp(weather.minTemp)}
+            temp={convertTemp(weather.temp)}
+            icon={weather.icon}
+            humidity={weather.humidity}
+            cloud={weather.cloud}
+            wind={weather.wind}
+            city={weather.city}
+            country={weather.country}
+            unit={unit}
+          />
           {/* Hourly Forecast */}
           <HourlyForecast
             hourlyData={weather.hourly.map((h) => ({
@@ -162,11 +155,10 @@ const Home :React.FC = () => {
             unit={unit}
           />
         </div>
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Home
+
+export default Home;
