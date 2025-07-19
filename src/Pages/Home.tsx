@@ -39,6 +39,7 @@ interface WeatherData {
 const Home: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
+
   const [unit, setUnit] = useState<'C' | 'F'>('C');
 
   const convertTemp = (tempC: number) => {
@@ -98,7 +99,6 @@ const Home: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
     <div className="App">
       <div className="App-body d-flex flex-grow-1">
@@ -155,9 +155,7 @@ const Home: React.FC = () => {
             unit={unit}
           />
         </div>
-
       </div>
-
     </div>
   );
 };

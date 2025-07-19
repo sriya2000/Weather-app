@@ -29,7 +29,7 @@
 
 .left-section {
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /*page will not be scrollable*/
   padding: 2rem;
 }
 
