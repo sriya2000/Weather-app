@@ -19,7 +19,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData, unit }) => 
   return (
     <div className="hourly-forecast">
       <h3>Hourly Forecast</h3>
-      <div className="hourly-list">
+      <div className="hourly-list border-top p-2">
         {hourlyData.map((hour, index) => (
           <div key={index} className="hour">
             <p>{new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>

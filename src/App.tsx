@@ -4,13 +4,10 @@ import axios from 'axios';
 import { WeatherApiResponse } from './types/WeatherApiResponse';
 import HourlyForecast from './Component/HourlyForecast';
 import FiveDayForecast from './Component/FiveDayForecast';
+import DefaultCityForecast from './Component/DefaultCityForecast';
+import Header from './Component/Header';
+import UnitToggle from './Component/UnitToggle';
 import dayjs from 'dayjs';
-import CurrentWeatherDetails from './Component/CurrentWeatherDetails';
-// import utc from 'dayjs/plugin/utc';
-// import timezone from 'dayjs/plugin/timezone';
-// import localizedFormat from 'dayjs/plugin/localizedFormat';
-// import weekday from 'dayjs/plugin/weekday';
-
 
 interface WeatherData {
   temp: number;
@@ -102,74 +99,51 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <div className='d-flex'>
-        <div className="left-section col-lg-6 d-flex flex-column justify-content-between">
-          <div>
-            <div className="d-flex flex-column mb-4">
-              <p className="display-4 logo">WW⚡</p>
-              {/* <input className="form-control search-bar" type="text" placeholder="Search by City" /> */}
-              <div className="container my-4">
-                <form className="d-flex position-relative">
-                  <input
-                    className="form-control ps-5 py-2 rounded-pill"
-                    type="search"
-                    // placeholder="Search weather, city, or forecast..."
-                    placeholder="Search by City"
-                    aria-label="Search"
-                  />
-                  <span className="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
-                    <i className="bi bi-search"></i>
-                  </span>
-                </form>
+      <div className="d-flex flex-grow-1" style={{ height: '100vh' }}>
+        {/* -----------------------------------------------LEFT-SECTION------------------------------------------------ */}
+        <div className="left-section col-lg-6 d-flex flex-column justify-content-between align-items-start">
+          <div className='d-flex w-100 justify-content-between'>
+            {/* Head Section */}
+            <Header />
+            {/* Toggle Button */}
+            <UnitToggle unit={unit} onToggle={setUnit} />
+          </div>
+          {/* Default City Forecast Details */}
+          <DefaultCityForecast
+            temp={convertTemp(weather.temp)}
+            unit={unit}
+            city={weather.city}
+            lastUpdated={weather.lastUpdated}
+            icon={weather.icon}
+            description={weather.description}
+          />
+        </div>
+
+        {/* -----------------------------------------------RIGHT-SECTION------------------------------------------------ */}
+        <div className='right-section col-lg-6'>
+          <div className="current-forecast">
+            <h3>Current Weather Details</h3>
+            <p className="mb-2 fw-semibold border-top p-2">Thunderstorm with light drizzle</p>
+            <div className="hourly-list ">
+              <div className="hour">
+                <p>🌡 Temp max: 19&deg;C</p>
+              </div>
+              <div className="hour">
+                <p>🌡 Temp min: 15&deg;C</p>
+              </div>
+              <div className="hour">
+                <p>💧 Humidity: 58%</p>
+              </div>
+              <div className="hour">
+                <p>☁️ Cloudy: 86%</p>
+              </div>
+              <div className="hour">
+                <p>💨 Wind: 5km/h</p>
               </div>
             </div>
           </div>
 
-          <div className="d-flex align-items-center text-white">
-            {/* Temperature */}
-            <h1 className="display-2 me-2"> {convertTemp(weather.temp).toFixed(1)}&deg;{unit}</h1>
-
-            {/* City + Last Updated (Formatted) */}
-            <div>
-              <span className="fs-2">{weather.city}</span>
-              <p className="fs-6">{weather.lastUpdated}</p>
-            </div>
-            {/* Icon */}
-            <img className='weather-icon' src={weather.icon} alt={weather.description} />
-          </div>
-
-        </div>
-
-        <div className='right-section col-lg-6'>
-          {/* Toggle Button */}
-          <div className="unit-toggle">
-            <button
-              className={`unit-btn ${unit === 'C' ? 'active' : ''}`}
-              onClick={() => setUnit('C')}
-            >
-              °C
-            </button>
-            <button
-              className={`unit-btn ${unit === 'F' ? 'active' : ''}`}
-              onClick={() => setUnit('F')}
-            >
-              °F
-            </button>
-          </div>
-
-          <CurrentWeatherDetails
-            city={weather.city}
-            country={weather.country}
-            temp={convertTemp(weather.temp)}
-            maxTemp={convertTemp(weather.maxTemp)}
-            minTemp={convertTemp(weather.minTemp)}
-            humidity={weather.humidity}
-            condition={weather.description}
-            wind={weather.wind}
-            icon={weather.icon}
-            unit={unit}
-          />
-
+          {/* Hourly Forecast */}
           <HourlyForecast
             hourlyData={weather.hourly.map((h) => ({
               ...h,
@@ -177,6 +151,7 @@ const App: React.FC = () => {
             }))}
             unit={unit}
           />
+          {/* Five Day Forecast */}
           <FiveDayForecast
             forecast={weather.forecast.map((d) => ({
               ...d,
@@ -185,12 +160,7 @@ const App: React.FC = () => {
             }))}
             unit={unit}
           />
-
-          
         </div>
-
-        
-
 
       </div>
 
