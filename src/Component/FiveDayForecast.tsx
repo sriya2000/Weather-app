@@ -8,9 +8,11 @@ interface FiveDayForecastProps {
     condition: string;
     icon: string;
   }[];
+
+   unit: 'C' | 'F';
 }
 
-const FiveDayForecast: React.FC<FiveDayForecastProps> = ({ forecast }) => (
+const FiveDayForecast: React.FC<FiveDayForecastProps> = ({ forecast, unit  }) => (
   <div className="five-day-forecast">
     <h3>5-Day Forecast</h3>
     <div className="forecast-list">
@@ -19,8 +21,14 @@ const FiveDayForecast: React.FC<FiveDayForecastProps> = ({ forecast }) => (
           <p>{day.date}</p>
           <img src={day.icon} alt={day.condition} />
           <p>{day.condition}</p>
-          <p>High: {day.maxTemp}°C</p>
-          <p>Low: {day.minTemp}°C</p>
+          {/* <p>High: {day.maxTemp}°C</p> */}
+          <p>
+            High: {day.maxTemp.toFixed(1)}°{unit}
+          </p>
+          {/* <p>Low: {day.minTemp}°C</p> */}
+          <p>
+            Low: {day.minTemp.toFixed(1)}°{unit}
+          </p>
         </div>
       ))}
     </div>

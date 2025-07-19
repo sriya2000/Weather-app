@@ -36,11 +36,17 @@ interface WeatherData {
 const App: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
+  const [unit, setUnit] = useState<'C' | 'F'>('C');
+
+const convertTemp = (tempC: number) => {
+  return unit === 'C' ? tempC : (tempC * 9) / 5 + 32;
+};
+
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         const response = await axios.get<WeatherApiResponse>(
-          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=Noida&days=5`
+          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=Bangalore&days=5`
         );
 
         const data = response.data;
@@ -111,7 +117,7 @@ const App: React.FC = () => {
 
           <div className="d-flex align-items-center text-white">
             {/* Temperature */}
-            <h1 className="display-2 me-2">{weather.temp}&deg;</h1>
+            <h1 className="display-2 me-2"> {convertTemp(weather.temp).toFixed(1)}&deg;{unit}</h1>
 
             {/* City + Last Updated (Formatted) */}
             <div>
@@ -125,8 +131,38 @@ const App: React.FC = () => {
         </div>
 
         <div className='right-section col-lg-6'>
-          <HourlyForecast hourlyData={weather.hourly} />
-          <FiveDayForecast forecast={weather.forecast} />
+           {/* Toggle Button */}
+          <div className="unit-toggle">
+            <button
+              className={`unit-btn ${unit === 'C' ? 'active' : ''}`}
+              onClick={() => setUnit('C')}
+            >
+              °C
+            </button>
+            <button
+              className={`unit-btn ${unit === 'F' ? 'active' : ''}`}
+              onClick={() => setUnit('F')}
+            >
+              °F
+            </button>
+          </div>
+
+
+           <HourlyForecast
+    hourlyData={weather.hourly.map((h) => ({
+      ...h,
+      temp: convertTemp(h.temp),
+    }))}
+    unit={unit}
+  />
+           <FiveDayForecast
+    forecast={weather.forecast.map((d) => ({
+      ...d,
+      maxTemp: convertTemp(d.maxTemp),
+      minTemp: convertTemp(d.minTemp),
+    }))}
+    unit={unit}
+  />
         </div>
         
       </div>
