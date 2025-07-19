@@ -76,16 +76,27 @@
   color: #fff;
 }
 
-.hourly-list,
-.forecast-list {
+.hourly-list{
   display: flex;
   justify-content: space-between;
   overflow-x: auto;
   gap: 10px;
 }
 
+.forecast-list {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Responsive ke liye */
+}
+
 .hour,
 .day {
+   background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 8px;
+  width: 120px;           /* <-- Fixed width */
+  min-width: 100px;
   text-align: center;
   min-width: 80px;
 }

@@ -16,6 +16,10 @@ interface WeatherData {
   city: string;
   country: string;
   lastUpdated: string;
+  maxTemp: number;
+  minTemp: number;
+  humidity: number;
+  wind: number;
   hourly: {
     time: string;
     temp: number;
@@ -44,7 +48,7 @@ const App: React.FC = () => {
     const fetchWeather = async () => {
       try {
         const response = await axios.get<WeatherApiResponse>(
-          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=Bangalore&days=5`
+          `https://api.weatherapi.com/v1/forecast.json?key=866ed44e051449eabb5141757251807&q=London&days=5`
         );
 
         const data = response.data;
@@ -58,6 +62,11 @@ const App: React.FC = () => {
           country: data.location.country,
           lastUpdated: dayjs(data.current.last_updated).format("HH:mm - dddd, D MMM 'YY"),
 
+
+          maxTemp: data.forecast.forecastday[0].day.maxtemp_c,
+          minTemp: data.forecast.forecastday[0].day.mintemp_c,
+          humidity: data.current.humidity,
+          wind: data.current.wind_kph,
           // Hourly for today (day 1)
           hourly: data.forecast.forecastday[0].hour.map((hour: any) => ({
             time: hour.time,
