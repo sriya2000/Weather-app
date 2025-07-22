@@ -39,7 +39,7 @@ interface WeatherData {
 const Home: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
-
+  const [error, setError] = useState<string | null>(null);
   const [unit, setUnit] = useState<'C' | 'F'>('C');
 
   const convertTemp = (tempC: number) => {
@@ -87,14 +87,31 @@ const Home: React.FC = () => {
             icon: day.day.condition.icon,
           })),
         });
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
+      } catch (err: any) {
+         if (err.response && err.response.status === 400) {
+        setError('City not found. Please try another city.');
+      } else {
+        setError('Failed to fetch weather data. Please try again later.');
       }
+      setWeather(null); // Error pe purana weather hata do
+    }
+      
     };
 
     fetchWeather();
   }, []);
 
+
+  if (error) {
+  return (
+    <div className="App">
+      <Header />
+      <div style={{ color: 'red', padding: 32, fontWeight: 'bold' }}>
+        {error}
+      </div>
+    </div>
+  );
+}
   if (!weather) {
     return <div>Loading...</div>;
   }

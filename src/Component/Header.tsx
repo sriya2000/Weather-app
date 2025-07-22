@@ -3,11 +3,19 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
 
+  //inputCity = Store input field value
+  //setInputCity = To update input value
   const [inputCity, setInputCity] = useState('');
+
+  //To change the route
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
+
+    //Page will not reload when form will be submitted
     e.preventDefault();
+
+    //If input is not blank it will navigate to /cityName route
     if (inputCity.trim()) {
       navigate(`/${inputCity.trim()}`);
     }

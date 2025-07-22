@@ -14,12 +14,16 @@ const CityWeather: React.FC = () => {
 
     const { cityName } = useParams<{ cityName: string }>();
     const [weather, setWeather] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
     const [unit, setUnit] = useState<'C' | 'F'>('C');
 
     const convertTemp = (tempC: number) => unit === 'C' ? tempC : (tempC * 9) / 5 + 32;
 
     useEffect(() => {
         if (!cityName) return;
+        console.log("City not found........")
+        setError(null); // Reset error on new search
+        setWeather(null); // Optionally reset old weather
         const fetchWeather = async () => {
             try {
                 const response = await axios.get<WeatherApiResponse>(
@@ -50,14 +54,38 @@ const CityWeather: React.FC = () => {
                         icon: day.day.condition.icon,
                     })),
                 });
-            } catch (error) {
-                setWeather(null);
+            } catch (err: any) {
+                // API returns 400 for city not found
+                if (err.response && err.response.status === 400) {
+                    setError('City not found. Please try another city.');
+                } else {
+                    setError('Failed to fetch weather data. Please try again later.');
+                }
             }
         };
         fetchWeather();
     }, [cityName]);
 
-    if (!weather) return <div style={{ color: "#fff" }}>Loading...</div>;
+    if (!weather) {
+    // return <div>Loading...</div>;
+    return(
+    <div className="App">
+      <Header />
+      <div style={{ color: "#fff" }}>Loading...</div>
+    </div>
+    )
+  }
+
+  if (error) {
+  return (
+    <div className="App">
+      <Header />
+      <div style={{ color: 'red', padding: 32, fontWeight: 'bold' }}>
+        {error}
+      </div>
+    </div>
+  );
+}
 
     return (
         <div className="App">
